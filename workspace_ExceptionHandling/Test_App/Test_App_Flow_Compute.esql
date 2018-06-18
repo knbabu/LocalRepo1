@@ -1,0 +1,21 @@
+
+
+CREATE COMPUTE MODULE Test_App_Flow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE UID INTEGER;
+		SET UID = InputRoot.XMLNSC.UID;
+		IF UID <> 0 THEN
+		SET OutputRoot.XMLNSC.UserId = InputRoot.XMLNSC.UID;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData.queueName  = 'OUT.Q';
+		SET Environment.Folder = InputRoot.XMLNSC;
+		PROPAGATE TO TERMINAL 'out';
+		ELSE
+			THROW USER EXCEPTION MESSAGE 500 VALUES('UID is Invalid');
+		END IF;
+		RETURN FALSE;
+		END;
+    END MODULE;
+
+
+--<UID>100</UID>

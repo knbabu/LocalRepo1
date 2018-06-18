@@ -1,0 +1,10 @@
+
+
+CREATE COMPUTE MODULE Test_Exception_MF_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.XMLNSC.UserId = InputRoot.XMLNSC.UID;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData.queueName  = 'OUT.Q';
+		SET Environment.Folder = InputRoot.XMLNSC;
+		END;
+END MODULE;

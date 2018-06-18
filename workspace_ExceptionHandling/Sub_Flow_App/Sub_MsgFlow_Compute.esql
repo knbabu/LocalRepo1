@@ -1,0 +1,21 @@
+
+
+CREATE COMPUTE MODULE Sub_MsgFlow_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE Number INTEGER;
+		DECLARE Text CHARACTER;
+		DECLARE Path REFERENCE TO InputExceptionList.*[1];
+		DECLARE FN CHARACTER FIELDNAME(InputExceptionList.*[1]);
+		WHILE Path.Number IS NOT NULL DO
+	 		SET Text = Path.Insert.Text;
+			SET Number = Path.Number;
+			SET OutputRoot.XMLNSC.ErrorDetails.Text = Text;
+			SET OutputRoot.XMLNSC.ErrorDetails.Number = Number;
+			SET OutputRoot.XMLNSC.ErrorDetails."FlowName.NodeName" = Path.Label;
+			MOVE Path LASTCHILD;
+			END WHILE;
+			RETURN TRUE;
+		END;
+
+	END MODULE;
