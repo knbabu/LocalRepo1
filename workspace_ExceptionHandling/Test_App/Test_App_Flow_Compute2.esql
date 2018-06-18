@@ -1,0 +1,26 @@
+
+
+CREATE COMPUTE MODULE Test_App_Flow_Compute2
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE Number INTEGER;
+		DECLARE Text CHARACTER;
+		DECLARE Path REFERENCE TO InputExceptionList.*[1];
+		DECLARE FN CHARACTER;
+		WHILE Path.Number IS NOT NULL DO
+			SET FN = FIELDNAME(Path);
+			IF FN = 'UserException' THEN
+			SET Text = Path.Insert.Text;
+			ELSE
+			SET Text = Path.Text;	
+			END IF;
+	 		SET Number = Path.Number;
+		    SET OutputRoot.XMLNSC.Message.UID = InputBody;
+			SET OutputRoot.XMLNSC.Message.ErrorDetails.Text = Text;
+			SET OutputRoot.XMLNSC.Message.ErrorDetails.Number = Number;
+			SET OutputRoot.XMLNSC.Message.ErrorDetails."FlowName.NodeName" = Path.Label;
+			MOVE Path LASTCHILD;
+			END WHILE;
+			RETURN TRUE;
+		END;
+END MODULE;

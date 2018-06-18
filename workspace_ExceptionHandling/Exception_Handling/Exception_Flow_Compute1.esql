@@ -1,0 +1,10 @@
+
+
+CREATE COMPUTE MODULE Exception_Flow_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.XMLNSC.EmpId = InputRoot.XMLNSC.UserId;
+		SET OutputLocalEnvironment.Destination.MQ.DestinationData.queueName  = 'SUB1';
+		SET Environment.Folder.EmpID = InputRoot.XMLNSC;
+	END;
+END MODULE;

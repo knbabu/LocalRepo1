@@ -1,0 +1,14 @@
+
+
+CREATE COMPUTE MODULE TRY_CATCH_MF_Compute1
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyEntireMessage();
+		IF InputRoot.XMLNSC.Request.No <> 0 THEN
+			THROW USER EXCEPTION MESSAGE 500 VALUES('Request.No is Invalid');
+		END IF;
+	END;
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+	END;
+END MODULE;
